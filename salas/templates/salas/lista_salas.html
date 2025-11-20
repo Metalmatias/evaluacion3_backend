@@ -1,0 +1,49 @@
+{% extends 'salas/base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Salas de Estudio - ITID</h1>
+<p class="text-muted">Haz clic en el nombre de una sala para ver detalles y reservar</p>
+
+<div class="row">
+    {% for sala in salas %}
+    <div class="col-md-4 mb-4">
+        <div class="card {% if sala.reserva_actual %}border-danger{% else %}border-success{% endif %} h-100">
+            <div class="card-body">
+                
+                <h5 class="card-title">
+                    <a href="{% url 'salas:detalle_sala' sala.pk %}" class="text-decoration-none text-dark">
+                        {{ sala.nombre }}
+                    </a>
+                </h5>
+                
+                <p class="card-text">
+                    <strong>Capacidad:</strong> {{ sala.capacidad_maxima }} personas<br>
+                    <strong>Estado:</strong> 
+                    <span class="badge {% if sala.reserva_actual %}bg-danger{% else %}bg-success{% endif %}">
+                        {% if sala.reserva_actual %}
+                            RESERVADA hasta {{ sala.reserva_actual.hora_termino|date:"H:i" }}
+                        {% else %}
+                            DISPONIBLE
+                        {% endif %}
+                    </span>
+                </p>
+                
+                {% if sala.reserva_actual %}
+                    <p class="text-muted small">
+                        Hora de término: {{ sala.reserva_actual.hora_termino|date:"d/m/Y H:i:s" }}
+                    </p>
+                {% else %}
+                    <p class="text-success small">
+                        Sala libre para reservar (ir a detalles)
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">No hay salas disponibles en este momento.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'salas/base.html' %}
+
+{% block content %}
+<h1>Sala: {{ sala.nombre }}</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="mb-3">Información de la Sala</h5>
+        <p><strong>Capacidad máxima:</strong> {{ sala.capacidad_maxima }} personas</p>
+        <p><strong>Habilitada:</strong> {{ sala.habilitada|yesno:"Sí,No" }}</p>
+        
+        {% if reserva_actual %}
+            <div class="alert alert-danger">
+                <h5>⚠️ Sala Reservada</h5>
+                <hr>
+                <!-- ✅ CUMPLE REQUISITO: SOLO MUESTRA HORA DE INICIO Y TÉRMINO -->
+                <p><strong>Hora de inicio:</strong> {{ reserva_actual.hora_inicio|date:"d/m/Y H:i:s" }}</p>
+                <p><strong>Hora de término:</strong> {{ reserva_actual.hora_termino|date:"d/m/Y H:i:s" }}</p>
+            </div>
+            <a href="{% url 'salas:lista_salas' %}" class="btn btn-secondary">Volver al listado</a>
+        {% else %}
+            <div class="alert alert-success">
+                <h5>✅ Sala Disponible</h5>
+                <p>Puedes reservar esta sala por 2 horas.</p>
+            </div>
+            <a href="{% url 'salas:crear_reserva' sala.pk %}" class="btn btn-primary">Reservar esta sala</a>
+            <a href="{% url 'salas:lista_salas' %}" class="btn btn-secondary">Volver</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'salas/base.html' %}
+
+{% block content %}
+<h1>Reservar Sala: {{ sala.nombre }}</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Detalles de la Reserva</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.rut.id_for_label }}" class="form-label">RUT (Formato: 12.345.678-9)</label>
+                        {{ form.rut }}
+                        {% if form.rut.errors %}
+                            <div class="text-danger">{{ form.rut.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Sala</label>
+                        <input type="text" class="form-control" value="{{ sala.nombre }}" disabled>
+                        {{ form.sala.as_hidden }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Hora de inicio</label>
+                        <input type="text" class="form-control" value="{% now 'd/m/Y H:i:s' %}" disabled>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Hora de término (2 horas después)</label>
+                        <input type="text" class="form-control" value="{{ reserva.hora_termino|default_if_none:'' }}" disabled>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Confirmar Reserva</button>
+                    <a href="{% url 'salas:lista_salas' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="alert alert-info">
+            <h5>Información Importante</h5>
+            <ul>
+                <li>La reserva dura exactamente 2 horas</li>
+                <li>Una vez transcurridas las 2 horas, la sala quedará disponible automáticamente</li>
+                <li>Debe presentar su RUT para acceder a la sala</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

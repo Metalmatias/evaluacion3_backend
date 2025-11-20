@@ -1,0 +1,21 @@
+{% extends 'salas/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-success">✅ Reserva Exitosa</h5>
+                <p class="card-text">Tu reserva ha sido registrada correctamente.</p>
+                <hr>
+                <p><strong>Sala:</strong> {{ reserva.sala.nombre }}</p>
+                <p><strong>RUT:</strong> {{ reserva.rut }}</p>
+                <p><strong>Inicio:</strong> {{ reserva.hora_inicio|date:"d/m/Y H:i" }}</p>
+                <p><strong>Término:</strong> {{ reserva.hora_termino|date:"d/m/Y H:i" }}</p>
+                <hr>
+                <a href="{% url 'salas:lista_salas' %}" class="btn btn-primary">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
